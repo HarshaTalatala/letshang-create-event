@@ -1,4 +1,15 @@
-function BasicEventForm({ title, setTitle, dateTime, setDateTime, location, setLocation }) {
+function BasicEventForm({
+  title,
+  setTitle,
+  dateTime,
+  setDateTime,
+  location,
+  setLocation,
+  description,
+  setDescription,
+  cost,
+  setCost,
+}) {
   return (
     <div className="space-y-5 text-gray-100">
       <div className="space-y-2">
@@ -29,6 +40,28 @@ function BasicEventForm({ title, setTitle, dateTime, setDateTime, location, setL
           value={location}
           onChange={(e) => setLocation(e.target.value)}
           placeholder="Add a location"
+          className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-gray-100 placeholder:text-gray-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-300">Event Description</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="What should guests expect?"
+          rows={3}
+          className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-gray-100 placeholder:text-gray-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-300">Cost / tickets</label>
+        <input
+          type="text"
+          value={cost}
+          onChange={(e) => setCost(e.target.value)}
+          placeholder="Free, $20 per person, or link to tickets"
           className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-gray-100 placeholder:text-gray-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
         />
       </div>
