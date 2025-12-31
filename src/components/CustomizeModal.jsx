@@ -9,10 +9,16 @@ function CustomizeModal({ isOpen, onClose, options = [], onSave }) {
   const [editDraft, setEditDraft] = useState(null);
 
   useEffect(() => {
-    setItems(options.map((o) => ({ ...o })));
-    setView('list');
-    setEditingItemId(null);
-    setEditDraft(null);
+    let cancelled = false;
+    // Defer state updates to avoid synchronous setState inside effect
+    Promise.resolve().then(() => {
+      if (cancelled) return;
+      setItems(options.map((o) => ({ ...o })));
+      setView('list');
+      setEditingItemId(null);
+      setEditDraft(null);
+    });
+    return () => { cancelled = true; };
   }, [options, isOpen]);
 
   // Lock background scroll when modal is open
@@ -53,10 +59,7 @@ function CustomizeModal({ isOpen, onClose, options = [], onSave }) {
     setView('edit');
   };
 
-  const updateField = (id, field, value) => {
-    setItems(items.map(it => it.id === id ? { ...it, [field]: value } : it));
-    if (editingItemId === id) setEditDraft(prev => ({ ...prev, [field]: value }));
-  };
+  // Inline field updates are handled by editing flow; remove unused helper
 
   const openEditPage = (id) => {
     const target = items.find(it => it.id === id);
@@ -75,8 +78,12 @@ function CustomizeModal({ isOpen, onClose, options = [], onSave }) {
   };
 
   const handleSaveAll = () => {
-    // strip isEditing flags
-    const cleaned = items.map(({ isEditing, ...rest }) => rest);
+    // strip isEditing flags by creating a shallow copy and deleting the flag
+    const cleaned = items.map((item) => {
+      const copy = { ...item };
+      delete copy.isEditing;
+      return copy;
+    });
     onSave?.(cleaned);
   };
 

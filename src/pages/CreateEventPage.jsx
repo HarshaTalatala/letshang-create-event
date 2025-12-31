@@ -27,7 +27,9 @@ function CreateEventPage() {
   useEffect(() => {
     try {
       localStorage.setItem('customizations', JSON.stringify(customizations));
-    } catch {}
+    } catch {
+      // Silently ignore localStorage errors
+    }
   }, [customizations]);
   // Accent colors extracted from flyer; format: [r, g, b]
   const [accentTopRGB, setAccentTopRGB] = useState([124, 58, 237]);
@@ -39,7 +41,9 @@ function CreateEventPage() {
     try {
       document.documentElement.style.setProperty('--accent-top', accentTopRGB.join(','));
       document.documentElement.style.setProperty('--accent-bottom', accentBottomRGB.join(','));
-    } catch {}
+    } catch {
+      // Silently ignore DOM manipulation errors
+    }
   }, [accentTopRGB, accentBottomRGB]);
 
   const fileInputRef = useRef(null);
