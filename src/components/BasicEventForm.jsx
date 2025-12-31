@@ -1,3 +1,5 @@
+import DateTimePicker from './DateTimePicker';
+
 function BasicEventForm({
   title,
   setTitle,
@@ -25,10 +27,10 @@ function BasicEventForm({
 
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-300">Date & Time</label>
-        <input
-          type="datetime-local"
-          value={dateTime}
-          onChange={(e) => setDateTime(e.target.value)}
+        <DateTimePicker
+          selected={dateTime}
+          onChange={setDateTime}
+          placeholderText="Select date & time"
           className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-gray-100 placeholder:text-gray-400 focus:outline-none focus:border-purple-400 focus:ring-1 focus:ring-purple-400"
         />
       </div>

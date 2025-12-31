@@ -1,0 +1,214 @@
+/* Base overrides so react-datepicker matches the app's dark glass theme and uses the accent vars */
+.react-datepicker {
+  background-color: rgba(6, 5, 10, 0.8);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(var(--accent-top, 124,58,237), 0.14);
+  color: #e9e4f2;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  padding: 8px;
+}
+
+.react-datepicker__header {
+  background: linear-gradient(180deg, rgba(var(--accent-top,124,58,237),0.10), rgba(var(--accent-bottom,29,23,34),0.04));
+  border-bottom: 1px solid rgba(var(--accent-top,124,58,237),0.08);
+  padding-top: 8px;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name {
+  color: #f6f2ff;
+  font-weight: 600;
+}
+
+.react-datepicker__day {
+  color: #d4cfe0;
+  border-radius: 0.375rem;
+  padding: 6px 8px;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background: linear-gradient(180deg, rgba(var(--accent-top,124,58,237),0.95), rgba(var(--accent-top,124,58,237),0.8));
+  color: white;
+}
+
+.react-datepicker__time-list-item--selected {
+  background: rgba(var(--accent-top,124,58,237), 0.95);
+  color: white;
+}
+
+/* ensure input text is visible and matches app text color */
+.react-datepicker-wrapper input,
+.react-datepicker__input-container input {
+  color: #f6f2ff;
+}
+
+/* wrapper for the datepicker to provide positioning context */
+.dtp-wrapper {
+  position: relative;
+}
+
+/* wrapper for custom input to show a right aligned icon */
+.dtp-input-wrapper {
+  position: relative;
+}
+
+.dtp-input-wrapper .dtp-input {
+  padding-right: 2.5rem; /* make space for the icon */
+  color: #f6f2ff;
+}
+
+.dtp-input-icon {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  background: transparent;
+  color: rgba(210, 168, 255, 0.95); /* fallback accent color */
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.dtp-input-icon svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+  color: inherit;
+  fill: currentColor;
+}
+
+/* input focus look consistent with other inputs */
+.react-datepicker-wrapper input:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(var(--accent-top,124,58,237),0.08);
+  border-color: rgba(var(--accent-top,124,58,237),0.6);
+}
+
+/* make small screens friendly */
+@media (max-width: 480px) {
+  .react-datepicker {
+    width: calc(100vw - 40px);
+    left: 0 !important;
+    right: 0 !important;
+  }
+}
+
+/* custom popper class for higher z-index and positioning tweaks */
+.dtp-popper {
+  z-index: 99999 !important;
+}
+
+/* Constrain popper to stay on the right side and not overlap flyer */
+.react-datepicker-popper[data-placement^='bottom'] {
+  left: auto !important;
+  right: 0 !important;
+  transform-origin: right top !important;
+}
+
+/* Ensure popper uses right-edge anchoring for right placements */
+.react-datepicker-popper[data-placement^='right'] {
+  transform-origin: left top !important;
+}
+
+/* Small visual offset when anchored to the right so it sits visually beside the input */
+.react-datepicker-popper[data-placement^='right'] .react-datepicker {
+  margin-left: 6px;
+}
+
+/* Ensure popper isn't clipped and can overflow its container */
+.react-datepicker-popper,
+.dtp-popper,
+.react-datepicker {
+  overflow: visible !important;
+}
+
+/* make popper more prominent and ensure it's always on top */
+.react-datepicker-popper {
+  z-index: 99999 !important;
+  position: fixed !important;
+}
+
+/* Wrapper must not clip the popper */
+.dtp-wrapper {
+  position: relative;
+  overflow: visible !important;
+}
+
+/* sensible width constraints so both calendar and time list fit */
+.dtp-popper .react-datepicker {
+  min-width: 320px;
+  max-width: 520px;
+}
+
+/* Theming for the time selector column */
+.dtp-popper .react-datepicker__time-container {
+  background: linear-gradient(180deg, rgba(var(--accent-top,124,58,237),0.04), rgba(var(--accent-bottom,29,23,34),0.02));
+  border-left: 1px solid rgba(var(--accent-top,124,58,237),0.08);
+  color: #e9e4f2;
+}
+
+.dtp-popper .react-datepicker__time {
+  background: transparent;
+  color: #d4cfe0;
+}
+
+.dtp-popper .react-datepicker__time-list {
+  background: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.25));
+  max-height: 260px;
+  overflow-y: auto;
+  color: #d4cfe0;
+}
+
+.dtp-popper .react-datepicker__time-list-item {
+  color: #cfc8dd;
+  padding: 6px 12px;
+}
+
+.dtp-popper .react-datepicker__time-list-item:hover {
+  background: rgba(var(--accent-top,124,58,237),0.12);
+  color: #fff;
+}
+
+.dtp-popper .react-datepicker__time-list-item--selected {
+  background: linear-gradient(180deg, rgba(var(--accent-top,124,58,237),0.95), rgba(var(--accent-top,124,58,237),0.8));
+  color: #fff;
+}
+
+/* Scrollbar styling for time list */
+.dtp-popper .react-datepicker__time-list::-webkit-scrollbar {
+  width: 10px;
+}
+.dtp-popper .react-datepicker__time-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dtp-popper .react-datepicker__time-list::-webkit-scrollbar-thumb {
+  background: rgba(var(--accent-top,124,58,237),0.28);
+  border-radius: 8px;
+  border: 2px solid rgba(0,0,0,0.12);
+}
+
+/* Top placement tweaks: pull the popper above the input and ensure transform origin is correct */
+.react-datepicker-popper[data-placement^='top'] {
+  transform-origin: left bottom !important;
+}
+
+.react-datepicker-popper[data-placement^='top'] .react-datepicker {
+  margin-bottom: 6px;
+}
+
+/* Right placement tweaks: ensure popper sits to the right and above/below as needed */
+.react-datepicker-popper[data-placement^='right'] {
+  transform-origin: left top !important;
+}
+.react-datepicker-popper[data-placement^='right'] .react-datepicker {
+  margin-left: 8px;
+}
+

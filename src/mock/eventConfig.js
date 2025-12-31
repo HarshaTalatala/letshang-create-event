@@ -38,3 +38,62 @@ export const eventConfig = {
     },
   ],
 };
+
+export const customizationOptions = [
+  {
+    id: 'questionnaires',
+    title: 'Questionnaires',
+    description: 'Create questionnaires for your event. Hosts can create questions and view respon...',
+    free: true,
+    eventCount: 446,
+    userCount: 406,
+  },
+  {
+    id: 'new-section',
+    title: 'New section',
+    description: 'Add a custom section to showcase anything you want on your event page.',
+    free: true,
+    eventCount: 817,
+    userCount: 277,
+  },
+  {
+    id: 'invite',
+    title: 'Invite',
+    description: 'Personally invite each and every guest within seconds',
+    paid: true,
+    eventCount: 340,
+    userCount: 150,
+  },
+  {
+    id: 'photo-gallery',
+    title: 'Photo Gallery',
+    description: 'Add photos for guests to view and relive the vibe.',
+    free: true,
+    eventCount: 342,
+    userCount: 302,
+  },
+  {
+    id: 'links',
+    title: 'Links',
+    description: 'Share links to event guides, menus, playlists, and more.',
+    free: true,
+    eventCount: 832,
+    userCount: 292,
+  },
+  {
+    id: 'announcements',
+    title: 'Announcements',
+    description: 'Post updates & messages to keep your guests informed.',
+    free: true,
+    eventCount: 686,
+    userCount: 146,
+  },
+  {
+    id: 'text-blasts',
+    title: 'Text blasts',
+    description: "Send text messages directly to your guest's phone number to keep your guests inf...",
+    free: true,
+    eventCount: 565,
+    userCount: 25,
+  },
+];
