@@ -1,16 +1,26 @@
-# React + Vite
+# letshang-create-event
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A minimal, desktop-first Create Event flow with local previews for flyer and background images, plus config-driven optional modules.
 
-Currently, two official plugins are available:
+## Tech stack
+- Vite + React (JavaScript)
+- Tailwind CSS (utility styling)
+- PostCSS + Autoprefixer
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## High-level architecture
+- `CreateEventPage` holds primary state (event fields, flyer preview, background image, enabled modules) and composes the page layout.
+- Config-driven modules: `src/mock/eventConfig.js` lists available modules; the UI reads this config to show “Quick Links” and to decide which modules to render.
+- Dynamic rendering via `ModuleRenderer`, which maps module types to their respective components (capacity, gallery, links, privacy). Adding a new module only requires updating the config and adding a component.
+- Local-only media previews: flyer and background images use `URL.createObjectURL` for instant feedback; nothing is uploaded or persisted.
 
-## React Compiler
+## Key design decisions & tradeoffs
+- **Local state over backend calls:** Everything stays client-side for speed; persistence intentionally omitted.
+- **Config-driven modules:** Avoids hardcoding module lists and keeps extensibility straightforward.
+- **Minimal styling:** Tailwind utilities for spacing, alignment, and readability; no heavy theming or animations to keep focus on structure.
+- **Readability on backgrounds:** Optional dark overlay over custom backgrounds to preserve text contrast.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Intentionally skipped (for now)
+- Form validation and submission flows
+- Accessibility hardening and comprehensive keyboard/focus states
+- Persistence or API integration for event data or uploads
+- Mobile-specific tuning (layout is desktop-first)

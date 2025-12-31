@@ -25,33 +25,51 @@ function CreateEventPage() {
       }
     : undefined;
 
-  const handleEnableModule = (moduleId) => {
-    const moduleToAdd = availableModules.find((module) => module.id === moduleId);
-    if (!moduleToAdd) return;
+  const handleToggleModule = (moduleId) => {
+    const moduleToToggle = availableModules.find((module) => module.id === moduleId);
+    if (!moduleToToggle) return;
 
     setEnabledModules((prev) => {
       const exists = prev.some((module) => module.id === moduleId);
-      if (exists) return prev;
-      return [...prev, { ...moduleToAdd, enabled: true }];
+      if (exists) {
+        return prev.filter((module) => module.id !== moduleId);
+      }
+      return [...prev, { ...moduleToToggle, enabled: true }];
     });
   };
 
   return (
     <div
-      className="relative min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-8"
+      className="relative min-h-screen bg-gradient-to-br from-[#2b2438] via-[#1c1a28] to-[#0f0d16] p-6 sm:p-10 text-gray-100"
       style={containerStyle}
     >
-      {backgroundUrl && <div className="absolute inset-0 bg-black/25" aria-hidden="true" />}
-      <div className="max-w-5xl mx-auto">
-        <header className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900">Create Event</h1>
-          <p className="mt-2 text-gray-600 max-w-2xl">
-            Set up your event details and add a flyer preview for quick sharing.
+      {backgroundUrl && <div className="absolute inset-0 bg-black/45" aria-hidden="true" />}
+      <div className="relative z-10 max-w-6xl mx-auto space-y-8">
+        <header className="space-y-2 text-gray-100">
+          <h1 className="text-3xl sm:text-4xl font-bold">Create Event</h1>
+          <p className="text-sm sm:text-base text-gray-200/80 max-w-3xl">
+            Build your event with a flyer, background, core details, and optional modules. All previews stay local.
           </p>
         </header>
 
-        <div className="relative bg-white border border-gray-100 rounded-2xl shadow-xl p-10">
-          <div className="grid gap-12 lg:grid-cols-[3fr_2fr]">
+        <div className="grid gap-8 lg:grid-cols-[340px,1fr]">
+          <div className="space-y-6">
+            <div className="bg-black/30 border border-white/10 rounded-2xl p-4 sm:p-5 shadow-md backdrop-blur-0">
+              <FlyerUploader
+                flyerPreview={flyerPreview}
+                setFlyerPreview={setFlyerPreview}
+              />
+            </div>
+
+            <div className="bg-black/30 border border-white/10 rounded-2xl p-4 sm:p-5 shadow-md backdrop-blur-0">
+              <BackgroundSelector
+                backgroundUrl={backgroundUrl}
+                setBackgroundUrl={setBackgroundUrl}
+              />
+            </div>
+          </div>
+
+          <div className="bg-black/30 border border-white/10 rounded-2xl p-6 sm:p-8 shadow-md space-y-10 backdrop-blur-0">
             <BasicEventForm
               title={title}
               setTitle={setTitle}
@@ -61,64 +79,50 @@ function CreateEventPage() {
               setLocation={setLocation}
             />
 
-            <div className="space-y-8">
-              <FlyerUploader
-                flyerPreview={flyerPreview}
-                setFlyerPreview={setFlyerPreview}
-              />
+            <div className="space-y-4">
+              <div className="space-y-1">
+                <h3 className="text-lg font-semibold text-white">Quick Links</h3>
+                <p className="text-sm text-gray-300">Enable optional modules for this event.</p>
+              </div>
 
-              <BackgroundSelector
-                backgroundUrl={backgroundUrl}
-                setBackgroundUrl={setBackgroundUrl}
-              />
-            </div>
-          </div>
+              <div className="flex flex-wrap gap-3">
+                {availableModules.map((module) => {
+                  const isEnabled = enabledModules.some((item) => item.id === module.id);
+                  return (
+                    <button
+                      key={module.id}
+                      type="button"
+                      onClick={() => handleToggleModule(module.id)}
+                      className={`px-4 py-2 rounded-md border text-sm font-medium transition-colors ${
+                        isEnabled
+                          ? 'bg-purple-700/20 border-purple-500/50 text-purple-100'
+                          : 'border-white/10 text-gray-100 hover:border-white/30'
+                      }`}
+                    >
+                      {module.type.charAt(0).toUpperCase() + module.type.slice(1)}
+                    </button>
+                  );
+                })}
+              </div>
 
-          <div className="mt-12 space-y-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900">Quick Links</h3>
-                <p className="text-sm text-gray-500">Enable optional modules for this event.</p>
+              <div className="space-y-3">
+                {enabledModules.length === 0 ? (
+                  <p className="text-sm text-gray-300">No modules enabled yet.</p>
+                ) : (
+                  enabledModules.map((module) => (
+                    <div key={module.id} className="p-4 border border-white/10 rounded-lg bg-white/5">
+                      <ModuleRenderer module={module} />
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3">
-              {availableModules.map((module) => {
-                const isEnabled = enabledModules.some((item) => item.id === module.id);
-                return (
-                  <button
-                    key={module.id}
-                    type="button"
-                    onClick={() => handleEnableModule(module.id)}
-                    className={`px-4 py-2 rounded-md border text-sm ${
-                      isEnabled
-                        ? 'bg-purple-50 border-purple-200 text-purple-700'
-                        : 'border-gray-200 text-gray-700 hover:bg-gray-50'
-                    }`}
-                  >
-                    {module.type.charAt(0).toUpperCase() + module.type.slice(1)}
-                  </button>
-                );
-              })}
+            <div className="pt-4 border-t border-white/10 flex justify-end">
+              <button className="px-8 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold shadow-sm">
+                Save Event
+              </button>
             </div>
-
-            <div className="space-y-6">
-              {enabledModules.length === 0 ? (
-                <p className="text-sm text-gray-500">No modules enabled yet.</p>
-              ) : (
-                enabledModules.map((module) => (
-                  <div key={module.id} className="p-4 border border-gray-200 rounded-lg">
-                    <ModuleRenderer module={module} />
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          <div className="mt-12 pt-8 border-t border-gray-200 flex justify-end">
-            <button className="px-9 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 font-semibold shadow-sm">
-              Save Event
-            </button>
           </div>
         </div>
       </div>

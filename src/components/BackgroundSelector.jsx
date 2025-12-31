@@ -16,14 +16,14 @@ function BackgroundSelector({ backgroundUrl, setBackgroundUrl }) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 text-gray-100">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900">Background</h3>
+        <h3 className="text-lg font-semibold">Background</h3>
         {backgroundUrl && (
           <button
             type="button"
             onClick={handleSelect}
-            className="text-sm font-medium text-purple-600 hover:text-purple-700"
+            className="text-sm font-medium text-purple-200 hover:text-purple-100"
           >
             Change background
           </button>
@@ -31,7 +31,7 @@ function BackgroundSelector({ backgroundUrl, setBackgroundUrl }) {
       </div>
 
       <div className="space-y-3">
-        <div className="w-full max-w-xs aspect-video bg-gray-50 border border-dashed border-gray-300 rounded-xl overflow-hidden flex items-center justify-center">
+        <div className="w-full max-w-sm aspect-video bg-white/5 border border-white/10 rounded-xl overflow-hidden flex items-center justify-center">
           {backgroundUrl ? (
             <img
               src={backgroundUrl}
@@ -39,7 +39,7 @@ function BackgroundSelector({ backgroundUrl, setBackgroundUrl }) {
               className="w-full h-full object-cover"
             />
           ) : (
-            <span className="text-sm text-gray-500">No background selected</span>
+            <span className="text-sm text-gray-400">No background selected</span>
           )}
         </div>
 
@@ -54,11 +54,11 @@ function BackgroundSelector({ backgroundUrl, setBackgroundUrl }) {
           <button
             type="button"
             onClick={handleSelect}
-            className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800"
+            className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-500"
           >
             {backgroundUrl ? 'Change background' : 'Select background'}
           </button>
-          <p className="text-xs text-gray-500">Local preview only; not uploaded.</p>
+          <p className="text-xs text-gray-400">Local preview only; not uploaded.</p>
         </div>
       </div>
     </div>
