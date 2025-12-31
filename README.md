@@ -1,26 +1,84 @@
-# letshang-create-event
+# LetsHang Create Event Prototype
 
-A minimal, desktop-first Create Event flow with local previews for flyer and background images, plus config-driven optional modules.
+A desktop-focused prototype demonstrating structure and architecture for a "Create Event" page. This project prioritizes explainability and judicious design decisions over feature completeness.
 
-## Tech stack
-- Vite + React (JavaScript)
-- Tailwind CSS (utility styling)
-- PostCSS + Autoprefixer
+## Project Overview
 
-## High-level architecture
-- `CreateEventPage` holds primary state (event fields, flyer preview, background image, enabled modules) and composes the page layout.
-- Config-driven modules: `src/mock/eventConfig.js` lists available modules; the UI reads this config to show “Quick Links” and to decide which modules to render.
-- Dynamic rendering via `ModuleRenderer`, which maps module types to their respective components (capacity, gallery, links, privacy). Adding a new module only requires updating the config and adding a component.
-- Local-only media previews: flyer and background images use `URL.createObjectURL` for instant feedback; nothing is uploaded or persisted.
+Built with React, Vite, and Tailwind CSS, this prototype implements a modular, config-driven approach to event creation. The UI is function-driven rather than configuration-driven, with a clear separation between presentation logic and backend concerns.
 
-## Key design decisions & tradeoffs
-- **Local state over backend calls:** Everything stays client-side for speed; persistence intentionally omitted.
-- **Config-driven modules:** Avoids hardcoding module lists and keeps extensibility straightforward.
-- **Minimal styling:** Tailwind utilities for spacing, alignment, and readability; no heavy theming or animations to keep focus on structure.
-- **Readability on backgrounds:** Optional dark overlay over custom backgrounds to preserve text contrast.
+**Tech Stack:**
+- React 19
+- Vite 7
+- Tailwind CSS 3
+- react-datepicker for date/time selection
 
-## Intentionally skipped (for now)
-- Form validation and submission flows
-- Accessibility hardening and comprehensive keyboard/focus states
-- Persistence or API integration for event data or uploads
-- Mobile-specific tuning (layout is desktop-first)
+## Architecture Overview
+
+### Component Structure
+
+**CreateEventPage.jsx** - Orchestration layer that composes the create event experience. Manages form state and coordinates between basic form inputs, dynamic modules, and customization features.
+
+**ModuleRenderer** - Generic component that maps module type identifiers to their corresponding implementations. Enables dynamic, config-driven rendering of event modules.
+
+**Dynamic Modules** - Self-contained components for specific event features:
+- `CapacityModule` - Guest capacity settings
+- `GalleryModule` - Event photo gallery
+- `LinksModule` - External links and resources
+- `PrivacyModule` - Privacy and visibility controls
+
+**Supporting Components:**
+- `BasicEventForm` - Core event details (name, date, location)
+- `DateTimePicker` - Date and time selection
+- `BackgroundSelector` - Event background customization
+- `FlyerUploader` - Event flyer upload interface
+- `CustomizeModal` - Customization options overlay
+
+### Config-Driven Design
+
+Module availability and behavior are controlled through configuration objects defined in `src/mock/eventConfig.js`. The UI consumes these configurations through functions exposed by the mock API layer, not by directly importing config files.
+
+## Mock Backend Boundary
+
+All backend interactions are isolated behind `src/mock/api.js`. This file defines the contract between UI and backend.
+
+**Current Mock Functions:**
+- `fetchEventModules()` - Returns available module configurations
+- `fetchEventDefaults()` - Returns default event settings
+- Additional utility functions as needed
+
+**Key Architectural Principle:**
+
+Replacing the mock backend with a real API requires changes **only within** `src/mock/api.js`. The rest of the application depends on the interface, not the implementation.
+
+The mock implementation:
+- Returns realistic data structures
+- Simulates async behavior where appropriate
+- Defines clear function signatures that a real backend would implement
+
+## Running Locally
+
+**Prerequisites:**
+- Node.js (v16 or higher recommended)
+- npm or equivalent package manager
+
+**Setup:**
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+```
+
+The application will be available at `http://localhost:5173` (or the next available port).
+
+
+## Next Steps
+
+Reasonable extensions for this prototype:
+- Connect to a real backend API
+- Implement form validation and error states
+- Add loading and submission states
+- Extend module types
+- Add mobile responsiveness

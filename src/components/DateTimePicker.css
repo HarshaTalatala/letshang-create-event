@@ -47,11 +47,13 @@
 /* wrapper for the datepicker to provide positioning context */
 .dtp-wrapper {
   position: relative;
+  width: 100%;
 }
 
 /* wrapper for custom input to show a right aligned icon */
 .dtp-input-wrapper {
   position: relative;
+  width: 100%;
 }
 
 .dtp-input-wrapper .dtp-input {

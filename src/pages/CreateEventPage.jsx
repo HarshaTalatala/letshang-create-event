@@ -1,7 +1,8 @@
 import { useRef, useState, useEffect } from 'react';
 import CustomizeModal from '../components/CustomizeModal';
 import DateTimePicker from '../components/DateTimePicker';
-import { customizationOptions } from '../mock/eventConfig';
+// Use mock API abstraction to fetch initial configuration instead of importing raw config
+import { fetchInitialEventConfig } from '../mock/api';
 
 const defaultFlyer = 'https://letshang.co/assets/event-default-bg-8jRl328f.png';
 
@@ -13,12 +14,13 @@ function CreateEventPage() {
   const [cost, setCost] = useState('');
   const [flyerPreview, setFlyerPreview] = useState('');
   const [isCustomizeModalOpen, setIsCustomizeModalOpen] = useState(false);
+  // Initialize customizations from the mock API boundary (localStorage overrides)
   const [customizations, setCustomizations] = useState(() => {
     try {
       const saved = localStorage.getItem('customizations');
-      return saved ? JSON.parse(saved) : customizationOptions;
+      return saved ? JSON.parse(saved) : fetchInitialEventConfig().customizationOptions;
     } catch {
-      return customizationOptions;
+      return fetchInitialEventConfig().customizationOptions;
     }
   });
 
