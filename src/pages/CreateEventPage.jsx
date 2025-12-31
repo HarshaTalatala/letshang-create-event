@@ -2,6 +2,8 @@ import { useState } from 'react';
 import BasicEventForm from '../components/BasicEventForm';
 import FlyerUploader from '../components/FlyerUploader';
 import BackgroundSelector from '../components/BackgroundSelector';
+import ModuleRenderer from '../components/ModuleRenderer';
+import { eventConfig } from '../mock/eventConfig';
 
 function CreateEventPage() {
   const [title, setTitle] = useState('');
@@ -9,6 +11,11 @@ function CreateEventPage() {
   const [location, setLocation] = useState('');
   const [flyerPreview, setFlyerPreview] = useState('');
   const [backgroundUrl, setBackgroundUrl] = useState('');
+  const [enabledModules, setEnabledModules] = useState(() =>
+    eventConfig.modulesAvailable.filter((module) => module.enabled)
+  );
+
+  const availableModules = eventConfig.modulesAvailable;
 
   const containerStyle = backgroundUrl
     ? {
@@ -17,6 +24,17 @@ function CreateEventPage() {
         backgroundPosition: 'center',
       }
     : undefined;
+
+  const handleEnableModule = (moduleId) => {
+    const moduleToAdd = availableModules.find((module) => module.id === moduleId);
+    if (!moduleToAdd) return;
+
+    setEnabledModules((prev) => {
+      const exists = prev.some((module) => module.id === moduleId);
+      if (exists) return prev;
+      return [...prev, { ...moduleToAdd, enabled: true }];
+    });
+  };
 
   return (
     <div
@@ -53,6 +71,47 @@ function CreateEventPage() {
                 backgroundUrl={backgroundUrl}
                 setBackgroundUrl={setBackgroundUrl}
               />
+            </div>
+          </div>
+
+          <div className="mt-12 space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Quick Links</h3>
+                <p className="text-sm text-gray-500">Enable optional modules for this event.</p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap gap-3">
+              {availableModules.map((module) => {
+                const isEnabled = enabledModules.some((item) => item.id === module.id);
+                return (
+                  <button
+                    key={module.id}
+                    type="button"
+                    onClick={() => handleEnableModule(module.id)}
+                    className={`px-4 py-2 rounded-md border text-sm ${
+                      isEnabled
+                        ? 'bg-purple-50 border-purple-200 text-purple-700'
+                        : 'border-gray-200 text-gray-700 hover:bg-gray-50'
+                    }`}
+                  >
+                    {module.type.charAt(0).toUpperCase() + module.type.slice(1)}
+                  </button>
+                );
+              })}
+            </div>
+
+            <div className="space-y-6">
+              {enabledModules.length === 0 ? (
+                <p className="text-sm text-gray-500">No modules enabled yet.</p>
+              ) : (
+                enabledModules.map((module) => (
+                  <div key={module.id} className="p-4 border border-gray-200 rounded-lg">
+                    <ModuleRenderer module={module} />
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
