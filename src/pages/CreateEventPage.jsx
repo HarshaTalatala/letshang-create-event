@@ -1,15 +1,29 @@
 import { useState } from 'react';
 import BasicEventForm from '../components/BasicEventForm';
 import FlyerUploader from '../components/FlyerUploader';
+import BackgroundSelector from '../components/BackgroundSelector';
 
 function CreateEventPage() {
   const [title, setTitle] = useState('');
   const [dateTime, setDateTime] = useState('');
   const [location, setLocation] = useState('');
   const [flyerPreview, setFlyerPreview] = useState('');
+  const [backgroundUrl, setBackgroundUrl] = useState('');
+
+  const containerStyle = backgroundUrl
+    ? {
+        backgroundImage: `url(${backgroundUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }
+    : undefined;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-8">
+    <div
+      className="relative min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 p-8"
+      style={containerStyle}
+    >
+      {backgroundUrl && <div className="absolute inset-0 bg-black/25" aria-hidden="true" />}
       <div className="max-w-5xl mx-auto">
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-gray-900">Create Event</h1>
@@ -18,7 +32,7 @@ function CreateEventPage() {
           </p>
         </header>
 
-        <div className="bg-white border border-gray-100 rounded-2xl shadow-xl p-10">
+        <div className="relative bg-white border border-gray-100 rounded-2xl shadow-xl p-10">
           <div className="grid gap-12 lg:grid-cols-[3fr_2fr]">
             <BasicEventForm
               title={title}
@@ -29,10 +43,17 @@ function CreateEventPage() {
               setLocation={setLocation}
             />
 
-            <FlyerUploader
-              flyerPreview={flyerPreview}
-              setFlyerPreview={setFlyerPreview}
-            />
+            <div className="space-y-8">
+              <FlyerUploader
+                flyerPreview={flyerPreview}
+                setFlyerPreview={setFlyerPreview}
+              />
+
+              <BackgroundSelector
+                backgroundUrl={backgroundUrl}
+                setBackgroundUrl={setBackgroundUrl}
+              />
+            </div>
           </div>
 
           <div className="mt-12 pt-8 border-t border-gray-200 flex justify-end">
